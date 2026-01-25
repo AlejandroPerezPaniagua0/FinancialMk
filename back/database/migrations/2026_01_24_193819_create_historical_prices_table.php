@@ -13,7 +13,22 @@ return new class extends Migration
     {
         Schema::create('historical_prices', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('instrument_id')->constrained('instruments')->onDelete('cascade');
+            $table->date('date');
+
+            $table->decimal('open', 18, 6);
+            $table->decimal('high', 18, 6);
+            $table->decimal('low', 18, 6);
+            $table->decimal('close', 18, 6);
+            $table->decimal('adjusted_close', 18, 6);
+
+            $table->bigInteger('volume');
+            
             $table->timestamps();
+
+            $table->unique(['instrument_id', 'date']);
+            
+            $table->index('date');
         });
     }
 

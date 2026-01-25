@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Instrument extends Model
 {
@@ -36,5 +37,13 @@ class Instrument extends Model
     public function currency(): BelongsTo
     {
         return $this->belongsTo(Currency::class);
+    }
+
+    /**
+     * Obtiene el histórico de precios para este instrumento
+     */
+    public function historicalPrices(): HasMany
+    {
+        return $this->hasMany(HistoricalPrice::class);
     }
 }
