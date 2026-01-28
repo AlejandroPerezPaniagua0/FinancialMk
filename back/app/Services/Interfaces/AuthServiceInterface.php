@@ -10,8 +10,8 @@ use App\Models\User;
 interface AuthServiceInterface
 {
     public function register(RegisterUserDTO $dto): AuthResponseDTO;
-    
+
     public function login(LoginUserDTO $dto): AuthResponseDTO;
-    
+
     public function logout(User $user): void;
 }
