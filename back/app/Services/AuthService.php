@@ -52,7 +52,7 @@ class AuthService implements AuthServiceInterface
 
     public function logout(User $user): void
     {
-        $user->currentAccessToken()->delete();
+        $user->tokens()->delete();
     }
 
     private function generateToken(User $user, string $tokenName = 'auth_token'): string
