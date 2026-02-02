@@ -37,6 +37,7 @@ class TwelveDataApiClient extends BaseApiClient implements MarketProviderInterfa
      */
     public function fetchAssetClasses(): Collection
     {
+        $request = $this->get('symbols');
         return collect();
     }
 
@@ -78,8 +79,8 @@ class TwelveDataApiClient extends BaseApiClient implements MarketProviderInterfa
      */
     protected function authorize(PendingRequest $request): PendingRequest
     {
-        return $request->withHeaders([
-            'Authorization' => 'Bearer ' . $this->apiKey,
+        return $request->withQueryParameters([
+            'apikey' => $this->apiKey,
         ]);
     }
 }
