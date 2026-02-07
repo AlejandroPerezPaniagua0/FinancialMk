@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\MarketProviders;
+namespace App\Services\Interfaces;
 
 use DateTimeInterface;
 use Illuminate\Support\Collection;
