@@ -46,7 +46,7 @@ class TwelveDataApiClient extends BaseApiClient implements MarketProviderInterfa
 
         return collect($items)->map(function ($item): array {
             return [
-                'name' => (string) ($item['name'] ?? $item),
+                'name' => (string)($item['name'] ?? $item),
             ];
         });
     }
@@ -63,10 +63,10 @@ class TwelveDataApiClient extends BaseApiClient implements MarketProviderInterfa
 
         return collect($items)->map(function ($item): array {
             return [
-                'name' => (string) ($item['name'] ?? $item['currency'] ?? ''),
-                'iso_code' => (string) ($item['currency'] ?? $item['symbol'] ?? ''),
+                'name' => (string)($item['name'] ?? $item['currency'] ?? ''),
+                'iso_code' => (string)($item['currency'] ?? $item['symbol'] ?? ''),
             ];
-        })->filter(fn (array $item) => $item['iso_code'] !== '');
+        })->filter(fn(array $item) => $item['iso_code'] !== '');
     }
 
     /**
@@ -79,24 +79,24 @@ class TwelveDataApiClient extends BaseApiClient implements MarketProviderInterfa
     {
         $normalizedClass = strtolower($assetClass ?? '');
         $endpoint = match ($normalizedClass) {
-            'common stock', 'stocks' => 'stocks',
-            'etf' => 'etfs',
-            'digital currency', 'crypto' => 'cryptocurrencies',
-            'mutual fund' => 'mutual_funds/list',
-            default => 'symbol_search',
-        };
+                'common stock', 'stocks' => 'stocks',
+                'etf' => 'etfs',
+                'digital currency', 'crypto' => 'cryptocurrencies',
+                'mutual fund' => 'mutual_funds/list',
+                default => 'symbol_search',
+            };
 
         $payload = $this->get($endpoint);
         $items = $payload['data'] ?? $payload['result']['list'] ?? [];
 
         return collect($items)->map(function ($item) use ($normalizedClass): array {
             return [
-                'name' => (string) ($item['name'] ?? $item['instrument_name'] ?? ''),
-                'ticker' => (string) ($item['symbol'] ?? $item['ticker'] ?? ''),
+                'name' => (string)($item['name'] ?? $item['instrument_name'] ?? ''),
+                'ticker' => (string)($item['symbol'] ?? $item['ticker'] ?? ''),
                 'asset_class' => $item['instrument_type'] ?? ($normalizedClass ?: null),
                 'currency' => $item['currency'] ?? null,
             ];
-        })->filter(fn (array $item) => $item['ticker'] !== '');
+        })->filter(fn(array $item) => $item['ticker'] !== '');
     }
 
     /**
@@ -110,26 +110,30 @@ class TwelveDataApiClient extends BaseApiClient implements MarketProviderInterfa
     public function fetchHistoricalPrices(string $ticker, DateTimeInterface $from, DateTimeInterface $to): Collection
     {
         $payload = $this->get('time_series', [
-            'symbol'     => $ticker,
-            'interval'   => '1day',
+            'symbol' => $ticker,
+            'interval' => '1day',
             'start_date' => $from->format('Y-m-d H:i:s'),
-            'end_date'   => $to->format('Y-m-d H:i:s'),
-            'order'      => 'ASC',
+            'end_date' => $to->format('Y-m-d H:i:s'),
+            'order' => 'ASC',
         ]);
+
+        if (isset($payload['status']) && $payload['status'] === 'error') {
+            throw new \Exception($payload['message'] ?? 'Unknown TwelveData API error');
+        }
 
         $items = $payload['values'] ?? [];
 
         return collect($items)->map(function ($item): array {
             return [
-                'date' => (string) ($item['datetime'] ?? $item['date'] ?? ''),
-                'open' => (float) ($item['open'] ?? 0),
-                'high' => (float) ($item['high'] ?? 0),
-                'low' => (float) ($item['low'] ?? 0),
-                'close' => (float) ($item['close'] ?? 0),
-                'adjusted_close' => (float) ($item['adjusted_close'] ?? $item['close'] ?? 0),
-                'volume' => (int) ($item['volume'] ?? 0),
+                'date' => (string)($item['datetime'] ?? $item['date'] ?? ''),
+                'open' => (float)($item['open'] ?? 0),
+                'high' => (float)($item['high'] ?? 0),
+                'low' => (float)($item['low'] ?? 0),
+                'close' => (float)($item['close'] ?? 0),
+                'adjusted_close' => (float)($item['adjusted_close'] ?? $item['close'] ?? 0),
+                'volume' => (int)($item['volume'] ?? 0),
             ];
-        })->filter(fn (array $item) => $item['date'] !== '');
+        })->filter(fn(array $item) => $item['date'] !== '');
     }
 
     /**
