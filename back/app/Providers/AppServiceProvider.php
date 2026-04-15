@@ -3,11 +3,15 @@
 namespace App\Providers;
 
 use App\ApiClient\TwelveDataApiClient;
+use App\Repositories\HistoricalPriceRepository;
+use App\Repositories\InstrumentRepository;
+use App\Repositories\Interfaces\HistoricalPriceRepositoryInterface;
+use App\Repositories\Interfaces\InstrumentRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\UserRepository;
 use App\Services\AuthService;
 use App\Services\Interfaces\AuthServiceInterface;
-use App\Services\MarketProviders\MarketProviderInterface;
+use App\Services\Interfaces\MarketProviderInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
     {
         // Repositories
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(InstrumentRepositoryInterface::class, InstrumentRepository::class);
+        $this->app->bind(HistoricalPriceRepositoryInterface::class, HistoricalPriceRepository::class);
 
         // Api Clients
         $this->app->bind(TwelveDataApiClient::class, function ($app) {
