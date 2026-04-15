@@ -12,6 +12,8 @@ use App\Repositories\UserRepository;
 use App\Services\AuthService;
 use App\Services\Interfaces\AuthServiceInterface;
 use App\Services\Interfaces\MarketProviderInterface;
+use App\Services\Interfaces\UserSettingsServiceInterface;
+use App\Services\UserSettingsService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -34,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
         // Services
         $this->app->bind(AuthServiceInterface::class, AuthService::class);
         $this->app->bind(MarketProviderInterface::class, TwelveDataApiClient::class);
+        $this->app->bind(UserSettingsServiceInterface::class, UserSettingsService::class);
     }
 
     /**

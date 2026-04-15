@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MarketDataController;
+use App\Http\Controllers\UserSettingsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,4 +21,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/currencies', [MarketDataController::class, 'currencies']);
     Route::get('/instruments', [MarketDataController::class, 'instruments']);
     Route::get('/instruments/{id}/prices', [MarketDataController::class, 'prices']);
+
+    // User settings
+    Route::get('/user/settings', [UserSettingsController::class, 'show']);
+    Route::put('/user/settings', [UserSettingsController::class, 'update']);
 });
