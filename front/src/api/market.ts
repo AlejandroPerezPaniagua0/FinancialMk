@@ -6,6 +6,7 @@ import type {
   HistoricalPrice,
   Instrument,
   PaginatedResponse,
+  QuotesResponse,
 } from '@/types/market'
 
 export async function fetchAssetClasses(): Promise<AssetClass[]> {
@@ -47,4 +48,17 @@ export async function fetchPrices(
     { params },
   )
   return data.data
+}
+
+export async function fetchQuotes(
+  instrumentIds: number[],
+  signal?: AbortSignal,
+): Promise<QuotesResponse> {
+  const { data } = await apiClient.get<QuotesResponse>('/instruments/quotes', {
+    params: { ids: instrumentIds },
+    // indexes:false -> ids[]=1&ids[]=2, which PHP parses as an array.
+    paramsSerializer: { indexes: false },
+    signal,
+  })
+  return data
 }

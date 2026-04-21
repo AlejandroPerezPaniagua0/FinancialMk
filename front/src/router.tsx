@@ -2,6 +2,7 @@ import { Navigate, createBrowserRouter } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import AppLayout from '@/layouts/AppLayout'
 import AuthLayout from '@/layouts/AuthLayout'
+import ComparisonPage from '@/pages/ComparisonPage'
 import DashboardPage from '@/pages/DashboardPage'
 import InstrumentDetailPage from '@/pages/InstrumentDetailPage'
 import InstrumentsPage from '@/pages/InstrumentsPage'
@@ -55,6 +56,7 @@ export const router = createBrowserRouter([
       { path: '/dashboard', element: <DashboardPage /> },
       { path: '/instruments', element: <InstrumentsPage /> },
       { path: '/instruments/:id', element: <InstrumentDetailPage /> },
+      { path: '/comparison', element: <ComparisonPage /> },
     ],
   },
 

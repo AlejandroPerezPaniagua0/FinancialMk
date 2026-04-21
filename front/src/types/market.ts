@@ -48,3 +48,28 @@ export interface PaginatedResponse<T> {
 export interface CollectionResponse<T> {
   data: T[]
 }
+
+export interface Quote {
+  instrument_id: number
+  ticker: string
+  price: number | null
+  previous_close: number | null
+  change: number | null
+  change_percent: number | null
+  currency: string | null
+  fetched_at: string
+  cached: boolean
+  next_refresh_in: number
+}
+
+export interface QuotesResponse {
+  data: Quote[]
+  meta: {
+    throttle_seconds: number
+    max_assets: number
+    server_time: string
+  }
+}
+
+export const MAX_COMPARISON_ASSETS = 4
+export const MIN_COMPARISON_ASSETS = 2
