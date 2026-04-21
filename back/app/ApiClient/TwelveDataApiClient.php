@@ -133,8 +133,54 @@ class TwelveDataApiClient extends BaseApiClient implements MarketProviderInterfa
     }
 
     /**
+     * Fetch a real-time quote snapshot for a ticker.
+     *
+     * Returns null on upstream failure so batch callers can continue with
+     * the remaining assets rather than aborting the whole request.
+     *
+     * @return array{
+     *   ticker: string,
+     *   price: float,
+     *   previous_close: float|null,
+     *   change: float|null,
+     *   change_percent: float|null,
+     *   currency: string|null,
+     *   timestamp: string
+     * }|null
+     */
+    public function fetchQuote(string $ticker): ?array
+    {
+        try {
+            $payload = $this->get('quote', ['symbol' => $ticker]);
+        } catch (\Throwable) {
+            return null;
+        }
+
+        if (!isset($payload['close']) && !isset($payload['price'])) {
+            return null;
+        }
+
+        $price = (float) ($payload['close'] ?? $payload['price'] ?? 0);
+        $previousClose = isset($payload['previous_close']) ? (float) $payload['previous_close'] : null;
+        $change = isset($payload['change']) ? (float) $payload['change'] : ($previousClose !== null ? $price - $previousClose : null);
+        $changePercent = isset($payload['percent_change'])
+            ? (float) $payload['percent_change']
+            : ($previousClose !== null && $previousClose != 0.0 ? (($price - $previousClose) / $previousClose) * 100 : null);
+
+        return [
+            'ticker'         => $ticker,
+            'price'          => $price,
+            'previous_close' => $previousClose,
+            'change'         => $change,
+            'change_percent' => $changePercent,
+            'currency'       => isset($payload['currency']) ? (string) $payload['currency'] : null,
+            'timestamp'      => (string) ($payload['datetime'] ?? $payload['timestamp'] ?? now()->toIso8601String()),
+        ];
+    }
+
+    /**
      * Authorize the request by injecting the API Key.
-     * Reference: Authentication by query parameter 
+     * Reference: Authentication by query parameter
      * @param PendingRequest $request
      * @return PendingRequest
      */

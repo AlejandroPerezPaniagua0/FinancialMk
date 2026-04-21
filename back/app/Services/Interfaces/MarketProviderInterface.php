@@ -62,4 +62,22 @@ interface MarketProviderInterface
         DateTimeInterface $from,
         DateTimeInterface $to
     ): Collection;
+
+    /**
+     * Fetch a real-time quote snapshot for a given instrument ticker.
+     *
+     * Returns null when the upstream fails or the ticker is unknown so
+     * the caller can skip that asset without aborting the batch.
+     *
+     * @return array{
+     *   ticker: string,
+     *   price: float,
+     *   previous_close: float|null,
+     *   change: float|null,
+     *   change_percent: float|null,
+     *   currency: string|null,
+     *   timestamp: string
+     * }|null
+     */
+    public function fetchQuote(string $ticker): ?array;
 }
