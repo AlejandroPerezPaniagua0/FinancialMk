@@ -18,7 +18,7 @@ export default function AssetClassFilter({
         className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors
           ${selected === undefined
             ? 'bg-blue-600 text-white'
-            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700'
           }`}
       >
         All
@@ -30,7 +30,7 @@ export default function AssetClassFilter({
           className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors
             ${selected === ac.id
               ? 'bg-blue-600 text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700'
             }`}
         >
           {ac.name}

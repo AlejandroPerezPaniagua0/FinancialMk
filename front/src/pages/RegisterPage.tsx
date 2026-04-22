@@ -62,10 +62,10 @@ export default function RegisterPage() {
 
   return (
     <>
-      <h2 className="text-xl font-semibold text-gray-900 mb-6">Create your account</h2>
+      <h2 className="text-xl font-semibold text-gray-900 mb-6 dark:text-white">Create your account</h2>
 
       {errors.general && (
-        <div className="mb-4 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+        <div className="mb-4 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700 dark:bg-red-950/40 dark:border-red-900 dark:text-red-300">
           {errors.general}
         </div>
       )}
@@ -111,9 +111,9 @@ export default function RegisterPage() {
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-gray-500">
+      <p className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
         Already have an account?{' '}
-        <Link to="/login" className="font-medium text-blue-600 hover:text-blue-700">
+        <Link to="/login" className="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
           Sign in
         </Link>
       </p>

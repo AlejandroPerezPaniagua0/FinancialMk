@@ -32,9 +32,9 @@ export default function InstrumentDetailPage() {
 
   if (!instrument && !pricesLoading) {
     return (
-      <div className="text-center py-16 text-sm text-gray-500">
+      <div className="text-center py-16 text-sm text-gray-500 dark:text-gray-400">
         Instrument not found.{' '}
-        <Link to="/instruments" className="text-blue-600 hover:underline">
+        <Link to="/instruments" className="text-blue-600 hover:underline dark:text-blue-400">
           Back to instruments
         </Link>
       </div>
@@ -53,21 +53,21 @@ export default function InstrumentDetailPage() {
   return (
     <div className="space-y-6 max-w-4xl">
       {/* Breadcrumb */}
-      <nav className="text-sm text-gray-500">
-        <Link to="/instruments" className="hover:text-gray-700">
+      <nav className="text-sm text-gray-500 dark:text-gray-400">
+        <Link to="/instruments" className="hover:text-gray-700 dark:hover:text-gray-200">
           Instruments
         </Link>
         {' / '}
-        <span className="text-gray-900 font-medium">{instrument?.ticker ?? '…'}</span>
+        <span className="text-gray-900 font-medium dark:text-white">{instrument?.ticker ?? '…'}</span>
       </nav>
 
       {/* Header */}
       <div className="flex items-start gap-4 flex-wrap">
         <div className="flex-1">
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
             {instrument?.name ?? '…'}
           </h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             {instrument?.ticker} · {instrument?.asset_class.name} ·{' '}
             {instrument?.currency.iso_code}
           </p>
@@ -75,13 +75,13 @@ export default function InstrumentDetailPage() {
 
         {lastPrice && (
           <div className="text-right">
-            <p className="text-3xl font-bold text-gray-900">
+            <p className="text-3xl font-bold text-gray-900 dark:text-white">
               {lastPrice.close.toFixed(2)}
             </p>
             {change !== null && changePct !== null && (
               <p
                 className={`text-sm font-medium ${
-                  change >= 0 ? 'text-green-600' : 'text-red-500'
+                  change >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-500 dark:text-red-400'
                 }`}
               >
                 {change >= 0 ? '+' : ''}
@@ -93,7 +93,7 @@ export default function InstrumentDetailPage() {
       </div>
 
       {/* Chart card */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
+      <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4 dark:bg-gray-900 dark:border-gray-800">
         <DateRangePicker
           from={dateRange.from}
           to={dateRange.to}
@@ -101,7 +101,7 @@ export default function InstrumentDetailPage() {
         />
 
         {pricesLoading ? (
-          <div className="h-64 flex items-center justify-center text-sm text-gray-400 animate-pulse">
+          <div className="h-64 flex items-center justify-center text-sm text-gray-400 animate-pulse dark:text-gray-500">
             Loading chart…
           </div>
         ) : (
@@ -111,8 +111,8 @@ export default function InstrumentDetailPage() {
 
       {/* OHLCAV summary */}
       {lastPrice && (
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h2 className="text-sm font-semibold text-gray-700 mb-4">Latest session</h2>
+        <div className="bg-white rounded-xl border border-gray-200 p-6 dark:bg-gray-900 dark:border-gray-800">
+          <h2 className="text-sm font-semibold text-gray-700 mb-4 dark:text-gray-200">Latest session</h2>
           <div className="grid grid-cols-3 gap-4 sm:grid-cols-6 text-center">
             {[
               { label: 'Open', value: lastPrice.open.toFixed(2) },
@@ -123,8 +123,8 @@ export default function InstrumentDetailPage() {
               { label: 'Volume', value: lastPrice.volume.toLocaleString() },
             ].map(({ label, value }) => (
               <div key={label}>
-                <p className="text-xs text-gray-400">{label}</p>
-                <p className="mt-1 font-semibold text-gray-900">{value}</p>
+                <p className="text-xs text-gray-400 dark:text-gray-500">{label}</p>
+                <p className="mt-1 font-semibold text-gray-900 dark:text-white">{value}</p>
               </div>
             ))}
           </div>
