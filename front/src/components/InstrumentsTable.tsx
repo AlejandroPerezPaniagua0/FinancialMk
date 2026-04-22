@@ -13,7 +13,7 @@ export default function InstrumentsTable({ instruments, loading }: InstrumentsTa
 
   if (loading) {
     return (
-      <div className="py-12 text-center text-sm text-gray-500 animate-pulse">
+      <div className="py-12 text-center text-sm text-gray-500 animate-pulse dark:text-gray-400">
         Loading instruments…
       </div>
     )
@@ -21,33 +21,37 @@ export default function InstrumentsTable({ instruments, loading }: InstrumentsTa
 
   if (instruments.length === 0) {
     return (
-      <div className="py-12 text-center text-sm text-gray-500">No instruments found.</div>
+      <div className="py-12 text-center text-sm text-gray-500 dark:text-gray-400">No instruments found.</div>
     )
   }
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-gray-200">
+    <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-800">
       <table className="w-full text-sm">
-        <thead className="bg-gray-50 border-b border-gray-200">
+        <thead className="bg-gray-50 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
           <tr>
             <th className="px-3 py-3 w-10 text-left">
               <span className="sr-only">Compare</span>
             </th>
-            <th className="px-4 py-3 text-left font-medium text-gray-500">Ticker</th>
-            <th className="px-4 py-3 text-left font-medium text-gray-500">Name</th>
-            <th className="px-4 py-3 text-left font-medium text-gray-500">Asset class</th>
-            <th className="px-4 py-3 text-left font-medium text-gray-500">Currency</th>
+            <th className="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Ticker</th>
+            <th className="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Name</th>
+            <th className="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Asset class</th>
+            <th className="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Currency</th>
             <th className="px-4 py-3" />
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-100 bg-white">
+        <tbody className="divide-y divide-gray-100 bg-white dark:divide-gray-800 dark:bg-gray-900">
           {instruments.map((inst) => {
             const selected = isSelected(inst.id)
             const disabled = !selected && maxReached
             return (
               <tr
                 key={inst.id}
-                className={`transition-colors ${selected ? 'bg-blue-50/50' : 'hover:bg-gray-50'}`}
+                className={`transition-colors ${
+                  selected
+                    ? 'bg-blue-50/50 dark:bg-blue-950/30'
+                    : 'hover:bg-gray-50 dark:hover:bg-gray-800/60'
+                }`}
               >
                 <td className="px-3 py-3">
                   <input
@@ -61,21 +65,21 @@ export default function InstrumentsTable({ instruments, loading }: InstrumentsTa
                         ? `You can compare up to ${MAX_COMPARISON_ASSETS} assets at a time`
                         : undefined
                     }
-                    className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 disabled:opacity-40"
+                    className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 disabled:opacity-40 dark:border-gray-600 dark:bg-gray-800"
                   />
                 </td>
-                <td className="px-4 py-3 font-mono font-semibold text-gray-900">{inst.ticker}</td>
-                <td className="px-4 py-3 text-gray-700">{inst.name}</td>
+                <td className="px-4 py-3 font-mono font-semibold text-gray-900 dark:text-white">{inst.ticker}</td>
+                <td className="px-4 py-3 text-gray-700 dark:text-gray-200">{inst.name}</td>
                 <td className="px-4 py-3">
-                  <span className="inline-block rounded-full bg-blue-50 text-blue-700 px-2.5 py-0.5 text-xs font-medium">
+                  <span className="inline-block rounded-full bg-blue-50 text-blue-700 px-2.5 py-0.5 text-xs font-medium dark:bg-blue-950/60 dark:text-blue-300">
                     {inst.asset_class.name}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-gray-500">{inst.currency.iso_code}</td>
+                <td className="px-4 py-3 text-gray-500 dark:text-gray-400">{inst.currency.iso_code}</td>
                 <td className="px-4 py-3 text-right">
                   <Link
                     to={`/instruments/${inst.id}`}
-                    className="text-blue-600 hover:text-blue-800 font-medium"
+                    className="text-blue-600 hover:text-blue-800 font-medium dark:text-blue-400 dark:hover:text-blue-300"
                   >
                     View →
                   </Link>

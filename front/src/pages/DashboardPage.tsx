@@ -23,8 +23,8 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Market Overview</h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Market Overview</h1>
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
           Browse and compare financial instruments across markets.
         </p>
       </div>
@@ -37,20 +37,20 @@ export default function DashboardPage() {
             onClick={() => handleAssetClassChange(ac.id)}
             className={`rounded-xl border p-4 text-left transition-colors
               ${selectedAssetClassId === ac.id
-                ? 'border-blue-300 bg-blue-50'
-                : 'border-gray-200 bg-white hover:bg-gray-50'
+                ? 'border-blue-300 bg-blue-50 dark:border-blue-700 dark:bg-blue-950/40'
+                : 'border-gray-200 bg-white hover:bg-gray-50 dark:border-gray-800 dark:bg-gray-900 dark:hover:bg-gray-800'
               }`}
           >
-            <p className="text-xs font-medium text-gray-500">Asset class</p>
-            <p className="mt-1 text-base font-semibold text-gray-900">{ac.name}</p>
+            <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Asset class</p>
+            <p className="mt-1 text-base font-semibold text-gray-900 dark:text-white">{ac.name}</p>
           </button>
         ))}
       </div>
 
       {/* Instruments table */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
+      <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4 dark:bg-gray-900 dark:border-gray-800">
         <div className="flex items-center justify-between gap-4 flex-wrap">
-          <h2 className="text-base font-semibold text-gray-900">Instruments</h2>
+          <h2 className="text-base font-semibold text-gray-900 dark:text-white">Instruments</h2>
           <AssetClassFilter
             assetClasses={assetClasses}
             selected={selectedAssetClassId}

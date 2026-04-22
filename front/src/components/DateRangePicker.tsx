@@ -51,7 +51,7 @@ export default function DateRangePicker({ from, to, onChange }: DateRangePickerP
             className={`rounded px-3 py-1 text-xs font-medium transition-colors
               ${isActivePreset(preset.days)
                 ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
               }`}
           >
             {preset.label}
@@ -64,14 +64,14 @@ export default function DateRangePicker({ from, to, onChange }: DateRangePickerP
           type="date"
           value={from ?? ''}
           onChange={(e) => onChange(e.target.value || undefined, to)}
-          className="rounded border border-gray-300 px-2 py-1 text-xs outline-none focus:ring-2 focus:ring-blue-500"
+          className="rounded border border-gray-300 px-2 py-1 text-xs outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:[color-scheme:dark]"
         />
-        <span className="text-gray-400">–</span>
+        <span className="text-gray-400 dark:text-gray-500">–</span>
         <input
           type="date"
           value={to ?? ''}
           onChange={(e) => onChange(from, e.target.value || undefined)}
-          className="rounded border border-gray-300 px-2 py-1 text-xs outline-none focus:ring-2 focus:ring-blue-500"
+          className="rounded border border-gray-300 px-2 py-1 text-xs outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:[color-scheme:dark]"
         />
       </div>
     </div>

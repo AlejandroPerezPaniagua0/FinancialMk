@@ -22,13 +22,13 @@ function CustomTooltip({ payload }: TooltipPayload) {
   if (!payload) return null
   const d = payload
   return (
-    <div className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs shadow-lg space-y-1">
-      <p className="font-semibold text-gray-700">{d.date}</p>
+    <div className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs shadow-lg space-y-1 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200">
+      <p className="font-semibold text-gray-700 dark:text-gray-100">{d.date}</p>
       <p>Open: <span className="font-medium">{d.open?.toFixed(2)}</span></p>
-      <p>High: <span className="font-medium text-green-600">{d.high?.toFixed(2)}</span></p>
-      <p>Low: <span className="font-medium text-red-500">{d.low?.toFixed(2)}</span></p>
+      <p>High: <span className="font-medium text-green-600 dark:text-green-400">{d.high?.toFixed(2)}</span></p>
+      <p>Low: <span className="font-medium text-red-500 dark:text-red-400">{d.low?.toFixed(2)}</span></p>
       <p>Close: <span className="font-medium">{d.close?.toFixed(2)}</span></p>
-      <p className="text-gray-400">Vol: {d.volume?.toLocaleString()}</p>
+      <p className="text-gray-400 dark:text-gray-500">Vol: {d.volume?.toLocaleString()}</p>
     </div>
   )
 }
@@ -40,7 +40,7 @@ function formatDate(dateStr: string): string {
 export default function PriceChart({ prices, ticker }: PriceChartProps) {
   if (prices.length === 0) {
     return (
-      <div className="flex items-center justify-center h-64 text-sm text-gray-400">
+      <div className="flex items-center justify-center h-64 text-sm text-gray-400 dark:text-gray-500">
         No price data available for the selected range.
       </div>
     )
@@ -54,7 +54,7 @@ export default function PriceChart({ prices, ticker }: PriceChartProps) {
 
   return (
     <div>
-      <p className="text-xs text-gray-500 mb-2">{ticker} — Close price</p>
+      <p className="text-xs text-gray-500 mb-2 dark:text-gray-400">{ticker} — Close price</p>
       <ResponsiveContainer width="100%" height={300}>
         <AreaChart data={prices} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
           <defs>

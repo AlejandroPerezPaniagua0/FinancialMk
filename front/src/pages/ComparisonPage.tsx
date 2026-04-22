@@ -43,9 +43,9 @@ export default function ComparisonPage() {
 
   if (!hasEnough) {
     return (
-      <div className="mx-auto max-w-lg rounded-xl border border-gray-200 bg-white p-8 text-center space-y-3">
-        <h1 className="text-lg font-semibold text-gray-900">Pick at least 2 assets</h1>
-        <p className="text-sm text-gray-500">
+      <div className="mx-auto max-w-lg rounded-xl border border-gray-200 bg-white p-8 text-center space-y-3 dark:border-gray-800 dark:bg-gray-900">
+        <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Pick at least 2 assets</h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
           Open the instruments list and select between 2 and 4 instruments to compare side by side.
         </p>
         <Link
@@ -62,8 +62,8 @@ export default function ComparisonPage() {
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Asset comparison</h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Asset comparison</h1>
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Comparing {selectedIds.length} assets · refreshing every {throttleSeconds ?? 30}s
             {lastUpdatedAt && (
               <> · last update {new Date(lastUpdatedAt).toLocaleTimeString()}</>
@@ -76,14 +76,14 @@ export default function ComparisonPage() {
             type="button"
             onClick={refresh}
             disabled={isRefreshing || isLoading}
-            className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-800"
           >
             {isRefreshing ? 'Refreshing…' : 'Refresh now'}
           </button>
           <button
             type="button"
             onClick={handleClose}
-            className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-50"
+            className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-800"
           >
             Close
           </button>
@@ -91,13 +91,13 @@ export default function ComparisonPage() {
       </div>
 
       {error && (
-        <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-2 text-sm text-amber-800">
+        <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-2 text-sm text-amber-800 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-300">
           {error}
         </div>
       )}
 
       {isLoading && selectedInstruments.length === 0 ? (
-        <div className="py-12 text-center text-sm text-gray-500 animate-pulse">
+        <div className="py-12 text-center text-sm text-gray-500 animate-pulse dark:text-gray-400">
           Loading comparison…
         </div>
       ) : (
