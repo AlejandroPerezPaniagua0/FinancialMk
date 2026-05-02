@@ -1,0 +1,53 @@
+name: ✨ Feature request
+description: Suggest something FinancialMk should do.
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before filing, please skim the [Manifesto](../../MANIFESTO.md) — some directions are explicitly out of scope (paid plans, telemetry, ad networks, AI investment advice). Everything else is fair game.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the user need — what task is currently painful or impossible?
+      placeholder: As a user analyzing dividend stocks, I cannot currently...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: How would the feature work? Sketch the UX, the data flow, or the API.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What other approaches did you think about? Why are they worse?
+
+  - type: dropdown
+    id: pillar
+    attributes:
+      label: Which project pillar does this serve?
+      options:
+        - Give without expecting (1)
+        - Help out of nowhere — the gift (2)
+        - Values / inspire (3)
+        - David vs Goliath rebellion (4)
+        - Pure dev quality (refactor, perf, tests)
+        - Not sure
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: I have read [MANIFESTO.md](../../MANIFESTO.md) and confirm this does not push the project toward paid tiers, telemetry, ads, or vendor lock-in.
+          required: true
