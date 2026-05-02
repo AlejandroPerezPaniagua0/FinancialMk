@@ -111,6 +111,7 @@ export function useQuotesPolling(
 
     return () => {
       // Invalidate this generation so any late response is dropped.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       generationRef.current++
       if (intervalRef.current !== null) {
         window.clearInterval(intervalRef.current)

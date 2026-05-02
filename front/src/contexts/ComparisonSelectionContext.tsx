@@ -59,6 +59,7 @@ export function ComparisonSelectionProvider({ children }: { children: React.Reac
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useComparisonSelection(): ComparisonSelectionContextValue {
   const ctx = useContext(ComparisonSelectionContext)
   if (ctx === null) {
