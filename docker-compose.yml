@@ -1,0 +1,112 @@
+# FinancialMk · Self-hosted stack
+#
+# Boots the full app: Laravel API + React SPA + Postgres + Redis.
+# Front is served by Nginx on port 8080 and proxies /api to the back.
+#
+# First run:
+#   cp .env.docker.example .env.docker
+#   docker compose up
+#
+# After first boot the app is available at http://localhost:8080
+# and ships pre-seeded with ~150 instruments and 2 years of OHLCV.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: financialmk-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-financialmk}
+      POSTGRES_USER: ${DB_USERNAME:-financialmk}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-financialmk}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-financialmk} -d ${DB_DATABASE:-financialmk}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - financialmk
+
+  redis:
+    image: redis:7-alpine
+    container_name: financialmk-redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - financialmk
+
+  back:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    container_name: financialmk-back
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      APP_NAME: FinancialMk
+      APP_ENV: ${APP_ENV:-production}
+      APP_KEY: ${APP_KEY}
+      APP_DEBUG: ${APP_DEBUG:-false}
+      APP_URL: ${APP_URL:-http://localhost:8080}
+      LOG_CHANNEL: stack
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: ${DB_DATABASE:-financialmk}
+      DB_USERNAME: ${DB_USERNAME:-financialmk}
+      DB_PASSWORD: ${DB_PASSWORD:-financialmk}
+
+      CACHE_STORE: redis
+      QUEUE_CONNECTION: redis
+      SESSION_DRIVER: redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
+      MARKET_PROVIDER: ${MARKET_PROVIDER:-stooq}
+      TWELVE_DATA_API_KEY: ${TWELVE_DATA_API_KEY:-}
+      MARKET_POLLING_THROTTLE_SECONDS: ${MARKET_POLLING_THROTTLE_SECONDS:-30}
+      MARKET_POLLING_MAX_ASSETS: ${MARKET_POLLING_MAX_ASSETS:-4}
+      MARKET_POLLING_REQUEST_RATE: ${MARKET_POLLING_REQUEST_RATE:-30,1}
+
+      DEMO_MODE: ${DEMO_MODE:-true}
+
+      MAIL_MAILER: ${MAIL_MAILER:-log}
+    expose:
+      - "8000"
+    networks:
+      - financialmk
+
+  front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: /api
+    container_name: financialmk-front
+    restart: unless-stopped
+    depends_on:
+      - back
+    ports:
+      - "${APP_PORT:-8080}:80"
+    networks:
+      - financialmk
+
+volumes:
+  postgres-data:
+    driver: local
+
+networks:
+  financialmk:
+    driver: bridge
