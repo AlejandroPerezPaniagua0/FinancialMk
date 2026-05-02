@@ -28,7 +28,7 @@ class DemoService implements DemoServiceInterface
         }
 
         $email = (string) config('demo.email');
-        $user  = $this->userRepository->findByEmail($email);
+        $user = $this->userRepository->findByEmail($email);
 
         if (! $user) {
             throw new RuntimeException("Demo user '{$email}' not found — run `php artisan db:seed --class=DemoUserSeeder`.");
@@ -41,9 +41,9 @@ class DemoService implements DemoServiceInterface
 
         return new AuthResponseDTO(
             accessToken: $token,
-            tokenType:   'Bearer',
-            user:        $user,
-            message:     'Logged in as demo user',
+            tokenType: 'Bearer',
+            user: $user,
+            message: 'Logged in as demo user',
         );
     }
 }

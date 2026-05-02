@@ -51,7 +51,7 @@ class MarketDataController extends Controller
     {
         $validated = $request->validate([
             'asset_class_id' => 'sometimes|integer|exists:asset_classes,id',
-            'per_page'       => 'sometimes|integer|min:1|max:100',
+            'per_page' => 'sometimes|integer|min:1|max:100',
         ]);
 
         $paginator = $this->instrumentRepository->paginate($validated);
@@ -77,7 +77,7 @@ class MarketDataController extends Controller
 
         $validated = $request->validate([
             'from' => 'sometimes|date_format:Y-m-d',
-            'to'   => 'sometimes|date_format:Y-m-d|after_or_equal:from',
+            'to' => 'sometimes|date_format:Y-m-d|after_or_equal:from',
         ]);
 
         $prices = $this->historicalPriceRepository->getByInstrument(

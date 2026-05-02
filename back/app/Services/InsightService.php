@@ -29,11 +29,13 @@ use Carbon\CarbonImmutable;
 class InsightService implements InsightServiceInterface
 {
     private const DEFAULT_BENCHMARK_TICKER = 'SPY';
+
     private const TRADING_DAYS_PER_YEAR = 252;
+
     private const VOL_WINDOW_DAYS = 30;
 
     public function __construct(
-        private readonly InstrumentRepositoryInterface     $instruments,
+        private readonly InstrumentRepositoryInterface $instruments,
         private readonly HistoricalPriceRepositoryInterface $prices,
     ) {}
 
@@ -45,42 +47,42 @@ class InsightService implements InsightServiceInterface
         }
 
         $oneYearAgo = CarbonImmutable::now()->subYear()->toDateString();
-        $today      = CarbonImmutable::now()->toDateString();
+        $today = CarbonImmutable::now()->toDateString();
 
         $rows = $this->prices->getByInstrument($instrumentId, $oneYearAgo, $today);
         if ($rows->isEmpty()) {
             return new InsightDTO(
-                instrumentId:             $instrumentId,
-                ticker:                   $instrument->ticker,
-                volatility30dAnnualized:  null,
-                maxDrawdown1y:            null,
+                instrumentId: $instrumentId,
+                ticker: $instrument->ticker,
+                volatility30dAnnualized: null,
+                maxDrawdown1y: null,
                 correlationWithBenchmark: null,
-                benchmarkTicker:          $benchmarkTicker ?? self::DEFAULT_BENCHMARK_TICKER,
-                samples:                  0,
-                rangeStart:               null,
-                rangeEnd:                 null,
+                benchmarkTicker: $benchmarkTicker ?? self::DEFAULT_BENCHMARK_TICKER,
+                samples: 0,
+                rangeStart: null,
+                rangeEnd: null,
             );
         }
 
-        $closes  = $rows->pluck('adjusted_close')->map(fn ($v) => (float) $v)->all();
+        $closes = $rows->pluck('adjusted_close')->map(fn ($v) => (float) $v)->all();
         $returns = $this->logReturns($closes);
 
         $volatility = $this->annualizedVolatility(array_slice($returns, -self::VOL_WINDOW_DAYS));
-        $drawdown   = $this->maxDrawdown($closes);
+        $drawdown = $this->maxDrawdown($closes);
 
         $benchmark = $benchmarkTicker ?? self::DEFAULT_BENCHMARK_TICKER;
         $correlation = $this->correlationVsBenchmark($instrument->ticker, $benchmark, $oneYearAgo, $today);
 
         return new InsightDTO(
-            instrumentId:             $instrumentId,
-            ticker:                   $instrument->ticker,
-            volatility30dAnnualized:  $volatility,
-            maxDrawdown1y:            $drawdown,
+            instrumentId: $instrumentId,
+            ticker: $instrument->ticker,
+            volatility30dAnnualized: $volatility,
+            maxDrawdown1y: $drawdown,
             correlationWithBenchmark: $correlation,
-            benchmarkTicker:          $benchmark,
-            samples:                  count($closes),
-            rangeStart:               (string) $rows->first()->date,
-            rangeEnd:                 (string) $rows->last()->date,
+            benchmarkTicker: $benchmark,
+            samples: count($closes),
+            rangeStart: (string) $rows->first()->date,
+            rangeEnd: (string) $rows->last()->date,
         );
     }
 
@@ -92,10 +94,10 @@ class InsightService implements InsightServiceInterface
         }
 
         $oneYearAgo = CarbonImmutable::now()->subYear()->toDateString();
-        $today      = CarbonImmutable::now()->toDateString();
+        $today = CarbonImmutable::now()->toDateString();
 
         // Build aligned series keyed by date so we can find overlap cheaply.
-        $tickers     = [];
+        $tickers = [];
         $closesByDay = [];
         foreach ($ids as $id) {
             $instrument = $this->instruments->findById($id);
@@ -118,13 +120,14 @@ class InsightService implements InsightServiceInterface
         }
 
         $orderedIds = array_values(array_keys($tickers));
-        $size       = count($orderedIds);
-        $matrix     = array_fill(0, $size, array_fill(0, $size, null));
+        $size = count($orderedIds);
+        $matrix = array_fill(0, $size, array_fill(0, $size, null));
 
         for ($i = 0; $i < $size; $i++) {
             for ($j = 0; $j < $size; $j++) {
                 if ($i === $j) {
                     $matrix[$i][$j] = 1.0;
+
                     continue;
                 }
                 $matrix[$i][$j] = $this->pearson(
@@ -135,11 +138,11 @@ class InsightService implements InsightServiceInterface
         }
 
         return [
-            'tickers'     => array_map(fn ($id) => $tickers[$id], $orderedIds),
-            'matrix'      => $matrix,
+            'tickers' => array_map(fn ($id) => $tickers[$id], $orderedIds),
+            'matrix' => $matrix,
             'range_start' => $commonDates[0] ?? null,
-            'range_end'   => end($commonDates) ?: null,
-            'samples'     => count($commonDates),
+            'range_end' => end($commonDates) ?: null,
+            'samples' => count($commonDates),
         ];
     }
 
@@ -183,8 +186,8 @@ class InsightService implements InsightServiceInterface
     }
 
     /**
-     * @param  array<int, float> $closes  In chronological order.
-     * @return array<int, float>          length = count($closes) - 1
+     * @param  array<int, float>  $closes  In chronological order.
+     * @return array<int, float> length = count($closes) - 1
      */
     private function logReturns(array $closes): array
     {
@@ -195,6 +198,7 @@ class InsightService implements InsightServiceInterface
             }
             $returns[] = log($closes[$i] / $closes[$i - 1]);
         }
+
         return $returns;
     }
 
@@ -226,7 +230,7 @@ class InsightService implements InsightServiceInterface
         }
 
         $peak = $closes[0];
-        $max  = 0.0;
+        $max = 0.0;
         foreach ($closes as $price) {
             if ($price > $peak) {
                 $peak = $price;
@@ -246,8 +250,8 @@ class InsightService implements InsightServiceInterface
      * Pearson correlation coefficient. Returns null when either series is
      * too short or has no variance.
      *
-     * @param array<int, float> $a
-     * @param array<int, float> $b
+     * @param  array<int, float>  $a
+     * @param  array<int, float>  $b
      */
     private function pearson(array $a, array $b): ?float
     {
@@ -283,7 +287,7 @@ class InsightService implements InsightServiceInterface
     /**
      * Intersect the date keys of multiple [date => price] maps.
      *
-     * @param  array<int, array<string, float>> $closesByDay
+     * @param  array<int, array<string, float>>  $closesByDay
      * @return array<int, string>
      */
     private function intersectDates(array $closesByDay): array
@@ -296,6 +300,7 @@ class InsightService implements InsightServiceInterface
         foreach ($sets as $other) {
             $first = array_values(array_intersect($first, $other));
         }
+
         return $first;
     }
 }

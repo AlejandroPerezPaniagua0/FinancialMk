@@ -16,8 +16,6 @@ class TwelveDataApiClient extends BaseApiClient implements MarketProviderInterfa
 
     /**
      * Get the name of the provider.
-     * 
-     * @return string
      */
     public function name(): string
     {
@@ -26,8 +24,6 @@ class TwelveDataApiClient extends BaseApiClient implements MarketProviderInterfa
 
     /**
      * Check availability.
-     * 
-     * @return bool
      */
     public function isAvailable(): bool
     {
@@ -36,7 +32,7 @@ class TwelveDataApiClient extends BaseApiClient implements MarketProviderInterfa
 
     /**
      * Fetch the list of asset classes available (instrument types).
-     * 
+     *
      * @return Collection<int, array{name: string}>
      */
     public function fetchAssetClasses(): Collection
@@ -53,7 +49,7 @@ class TwelveDataApiClient extends BaseApiClient implements MarketProviderInterfa
 
     /**
      * Fetch the list of currencies available (forex pairs).
-     * 
+     *
      * @return Collection<int, array{name: string, iso_code: string}>
      */
     public function fetchCurrencies(): Collection
@@ -71,8 +67,8 @@ class TwelveDataApiClient extends BaseApiClient implements MarketProviderInterfa
 
     /**
      * Fetch instruments filtered by asset class.
-     * 
-     * @param string|null $assetClass Optional filter by asset class name/code.
+     *
+     * @param  string|null  $assetClass  Optional filter by asset class name/code.
      * @return Collection<int, array{name: string, ticker: string, asset_class?: string, currency?: string}>
      */
     public function fetchInstruments(?string $assetClass = null): Collection
@@ -101,20 +97,17 @@ class TwelveDataApiClient extends BaseApiClient implements MarketProviderInterfa
 
     /**
      * Fetch historical prices.
-     * 
-     * @param string $ticker
-     * @param DateTimeInterface $from
-     * @param DateTimeInterface $to
+     *
      * @return Collection<int, array{date: string, open: float, high: float, low: float, close: float, adjusted_close: float, volume: int}>
      */
     public function fetchHistoricalPrices(string $ticker, DateTimeInterface $from, DateTimeInterface $to): Collection
     {
         $payload = $this->get('time_series', [
-            'symbol'     => $ticker,
-            'interval'   => '1day',
+            'symbol' => $ticker,
+            'interval' => '1day',
             'start_date' => $from->format('Y-m-d H:i:s'),
-            'end_date'   => $to->format('Y-m-d H:i:s'),
-            'order'      => 'ASC',
+            'end_date' => $to->format('Y-m-d H:i:s'),
+            'order' => 'ASC',
         ]);
 
         $items = $payload['values'] ?? [];
@@ -156,7 +149,7 @@ class TwelveDataApiClient extends BaseApiClient implements MarketProviderInterfa
             return null;
         }
 
-        if (!isset($payload['close']) && !isset($payload['price'])) {
+        if (! isset($payload['close']) && ! isset($payload['price'])) {
             return null;
         }
 
@@ -168,21 +161,19 @@ class TwelveDataApiClient extends BaseApiClient implements MarketProviderInterfa
             : ($previousClose !== null && $previousClose != 0.0 ? (($price - $previousClose) / $previousClose) * 100 : null);
 
         return [
-            'ticker'         => $ticker,
-            'price'          => $price,
+            'ticker' => $ticker,
+            'price' => $price,
             'previous_close' => $previousClose,
-            'change'         => $change,
+            'change' => $change,
             'change_percent' => $changePercent,
-            'currency'       => isset($payload['currency']) ? (string) $payload['currency'] : null,
-            'timestamp'      => (string) ($payload['datetime'] ?? $payload['timestamp'] ?? now()->toIso8601String()),
+            'currency' => isset($payload['currency']) ? (string) $payload['currency'] : null,
+            'timestamp' => (string) ($payload['datetime'] ?? $payload['timestamp'] ?? now()->toIso8601String()),
         ];
     }
 
     /**
      * Authorize the request by injecting the API Key.
      * Reference: Authentication by query parameter
-     * @param PendingRequest $request
-     * @return PendingRequest
      */
     protected function authorize(PendingRequest $request): PendingRequest
     {

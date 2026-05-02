@@ -49,22 +49,22 @@ class StooqApiClientTest extends TestCase
 
         $this->assertSame([
             [
-                'date'           => '2024-01-02',
-                'open'           => 100.10,
-                'high'           => 105.50,
-                'low'            => 99.80,
-                'close'          => 104.00,
+                'date' => '2024-01-02',
+                'open' => 100.10,
+                'high' => 105.50,
+                'low' => 99.80,
+                'close' => 104.00,
                 'adjusted_close' => 104.00,
-                'volume'         => 120000,
+                'volume' => 120000,
             ],
             [
-                'date'           => '2024-01-03',
-                'open'           => 104.00,
-                'high'           => 106.20,
-                'low'            => 103.40,
-                'close'          => 105.80,
+                'date' => '2024-01-03',
+                'open' => 104.00,
+                'high' => 106.20,
+                'low' => 103.40,
+                'close' => 105.80,
                 'adjusted_close' => 105.80,
-                'volume'         => 98000,
+                'volume' => 98000,
             ],
         ], $result);
 
@@ -83,7 +83,7 @@ class StooqApiClientTest extends TestCase
         ]);
 
         $client = new StooqApiClient(self::BASE_URL);
-        $quote  = $client->fetchQuote('AAPL');
+        $quote = $client->fetchQuote('AAPL');
 
         $this->assertNotNull($quote);
         $this->assertSame('AAPL', $quote['ticker']);
@@ -133,11 +133,11 @@ class StooqApiClientTest extends TestCase
     public static function tickerNormalizationCases(): array
     {
         return [
-            'plain US ticker'        => ['AAPL',     'AAPL.US'],
-            'crypto with hyphen'     => ['BTC-USD',  'BTCUSD'],
-            'forex with slash'       => ['EUR/USD',  'EURUSD'],
-            'multi-class share'      => ['BRK.B',    'BRK-B.US'],
-            'foreign exchange tag'   => ['ASML.NL',  'ASML.NL'],
+            'plain US ticker' => ['AAPL',     'AAPL.US'],
+            'crypto with hyphen' => ['BTC-USD',  'BTCUSD'],
+            'forex with slash' => ['EUR/USD',  'EURUSD'],
+            'multi-class share' => ['BRK.B',    'BRK-B.US'],
+            'foreign exchange tag' => ['ASML.NL',  'ASML.NL'],
         ];
     }
 }

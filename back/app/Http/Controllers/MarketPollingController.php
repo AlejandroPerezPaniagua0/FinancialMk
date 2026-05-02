@@ -25,7 +25,7 @@ class MarketPollingController extends Controller
         $maxAssets = (int) config('market.polling.max_assets', 4);
 
         $validated = $request->validate([
-            'ids'   => ['required', 'array', 'min:1', 'max:' . $maxAssets],
+            'ids' => ['required', 'array', 'min:1', 'max:'.$maxAssets],
             'ids.*' => ['integer', 'exists:instruments,id'],
         ]);
 
@@ -35,8 +35,8 @@ class MarketPollingController extends Controller
             'data' => QuoteResource::collection($quotes)->resolve(),
             'meta' => [
                 'throttle_seconds' => (int) config('market.polling.throttle_seconds', 30),
-                'max_assets'       => $maxAssets,
-                'server_time'      => now()->toIso8601String(),
+                'max_assets' => $maxAssets,
+                'server_time' => now()->toIso8601String(),
             ],
         ]);
     }

@@ -9,6 +9,7 @@ use Tests\TestCase;
 class TwelveDataApiClientTest extends TestCase
 {
     private const BASE_URL = 'https://api.twelvedata.com';
+
     private const API_KEY = 'test-key';
 
     public function test_fetches_asset_classes(): void
@@ -34,7 +35,7 @@ class TwelveDataApiClientTest extends TestCase
             ['name' => 'ETFs'],
         ], $result);
 
-        Http::assertSent(fn ($request) => str_contains($request->url(), 'apikey=' . self::API_KEY));
+        Http::assertSent(fn ($request) => str_contains($request->url(), 'apikey='.self::API_KEY));
     }
 
     public function test_fetches_currencies(): void

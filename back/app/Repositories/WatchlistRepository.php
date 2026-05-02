@@ -27,8 +27,8 @@ class WatchlistRepository implements WatchlistRepositoryInterface
     public function create(int $userId, string $name, bool $isDefault = false): Watchlist
     {
         return Watchlist::create([
-            'user_id'    => $userId,
-            'name'       => $name,
+            'user_id' => $userId,
+            'name' => $name,
             'is_default' => $isDefault,
         ])->load(['instruments.assetClass', 'instruments.currency']);
     }
@@ -36,6 +36,7 @@ class WatchlistRepository implements WatchlistRepositoryInterface
     public function rename(Watchlist $watchlist, string $name): Watchlist
     {
         $watchlist->update(['name' => $name]);
+
         return $watchlist->load(['instruments.assetClass', 'instruments.currency']);
     }
 

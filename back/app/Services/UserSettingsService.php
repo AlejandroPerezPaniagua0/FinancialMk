@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\DTOs\UserSettings\UpdateUserSettingsDTO;
 use App\Models\User;
 use App\Models\UserSetting;
 use App\Services\Interfaces\UserSettingsServiceInterface;

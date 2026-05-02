@@ -21,7 +21,7 @@ interface WatchlistServiceInterface
     /**
      * Replace the instruments of a watchlist (idempotent).
      *
-     * @param array<int, int> $instrumentIds
+     * @param  array<int, int>  $instrumentIds
      */
     public function setInstruments(User $user, int $watchlistId, array $instrumentIds): ?WatchlistDTO;
 }

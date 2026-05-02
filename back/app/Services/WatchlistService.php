@@ -26,6 +26,7 @@ class WatchlistService implements WatchlistServiceInterface
     public function show(User $user, int $watchlistId): ?WatchlistDTO
     {
         $watchlist = $this->watchlists->findForUser($watchlistId, $user->id);
+
         return $watchlist ? WatchlistDTO::fromModel($watchlist) : null;
     }
 
@@ -37,6 +38,7 @@ class WatchlistService implements WatchlistServiceInterface
             }
 
             $watchlist = $this->watchlists->create($user->id, $name, $isDefault);
+
             return WatchlistDTO::fromModel($watchlist);
         });
     }
@@ -49,6 +51,7 @@ class WatchlistService implements WatchlistServiceInterface
         }
 
         $renamed = $this->watchlists->rename($watchlist, $name);
+
         return WatchlistDTO::fromModel($renamed);
     }
 
@@ -60,6 +63,7 @@ class WatchlistService implements WatchlistServiceInterface
         }
 
         $this->watchlists->delete($watchlist);
+
         return true;
     }
 
@@ -71,6 +75,7 @@ class WatchlistService implements WatchlistServiceInterface
         }
 
         $synced = $this->watchlists->syncInstruments($watchlist, array_values($instrumentIds));
+
         return WatchlistDTO::fromModel($synced);
     }
 }

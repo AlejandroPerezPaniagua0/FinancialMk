@@ -10,7 +10,7 @@ interface InstrumentRepositoryInterface
     /**
      * Return a paginated list of instruments, optionally filtered by asset class.
      *
-     * @param array{asset_class_id?: int, per_page?: int} $filters
+     * @param  array{asset_class_id?: int, per_page?: int}  $filters
      */
     public function paginate(array $filters = []): LengthAwarePaginator;
 

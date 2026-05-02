@@ -12,7 +12,7 @@ class CurrencyFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'     => fake()->unique()->country(),
+            'name' => fake()->unique()->country(),
             'iso_code' => strtoupper(fake()->unique()->lexify('???')),
         ];
     }

@@ -19,6 +19,7 @@ class WatchlistController extends Controller
     public function index(Request $request): JsonResponse
     {
         $list = $this->watchlists->listFor($request->user());
+
         return response()->json([
             'data' => array_map(fn ($w) => $w->toArray(), $list),
         ]);
@@ -37,7 +38,7 @@ class WatchlistController extends Controller
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'name'       => 'required|string|max:120',
+            'name' => 'required|string|max:120',
             'is_default' => 'nullable|boolean',
         ]);
 
@@ -81,7 +82,7 @@ class WatchlistController extends Controller
     public function syncInstruments(Request $request, int $id): JsonResponse
     {
         $validated = $request->validate([
-            'instrument_ids'   => 'required|array',
+            'instrument_ids' => 'required|array',
             'instrument_ids.*' => 'integer|exists:instruments,id',
         ]);
 

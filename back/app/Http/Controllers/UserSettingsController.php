@@ -31,15 +31,15 @@ class UserSettingsController extends Controller
     public function update(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'currency_id'            => 'sometimes|nullable|integer|exists:currencies,id',
-            'theme'                  => 'sometimes|string|in:light,dark,system',
-            'language'               => 'sometimes|string|max:5',
-            'timezone'               => 'sometimes|string|timezone',
-            'default_chart_range'    => 'sometimes|string|in:1D,1W,1M,3M,6M,1Y,MAX',
+            'currency_id' => 'sometimes|nullable|integer|exists:currencies,id',
+            'theme' => 'sometimes|string|in:light,dark,system',
+            'language' => 'sometimes|string|max:5',
+            'timezone' => 'sometimes|string|timezone',
+            'default_chart_range' => 'sometimes|string|in:1D,1W,1M,3M,6M,1Y,MAX',
             'default_chart_interval' => 'sometimes|string|in:1min,5min,15min,30min,1h,4h,1d,1wk,1mo',
-            'show_extended_metrics'  => 'sometimes|boolean',
-            'notifications_enabled'  => 'sometimes|boolean',
-            'preferences'            => 'sometimes|nullable|array',
+            'show_extended_metrics' => 'sometimes|boolean',
+            'notifications_enabled' => 'sometimes|boolean',
+            'preferences' => 'sometimes|nullable|array',
         ]);
 
         $settings = $this->userSettingsService->updateForUser($request->user(), $validated);

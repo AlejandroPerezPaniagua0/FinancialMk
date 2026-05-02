@@ -21,7 +21,7 @@ interface WatchlistRepositoryInterface
     /**
      * Replace the set of instruments on a watchlist.
      *
-     * @param array<int, int> $instrumentIds Ordered list — index drives `position`.
+     * @param  array<int, int>  $instrumentIds  Ordered list — index drives `position`.
      */
     public function syncInstruments(Watchlist $watchlist, array $instrumentIds): Watchlist;
 

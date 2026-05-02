@@ -48,15 +48,15 @@ class MarketPollingService implements MarketPollingServiceInterface
             $entry = $this->resolveQuote($instrument->ticker);
 
             return [
-                'instrument_id'   => $id,
-                'ticker'          => $instrument->ticker,
-                'price'           => $entry['quote']['price'] ?? null,
-                'previous_close'  => $entry['quote']['previous_close'] ?? null,
-                'change'          => $entry['quote']['change'] ?? null,
-                'change_percent'  => $entry['quote']['change_percent'] ?? null,
-                'currency'        => $entry['quote']['currency'] ?? ($instrument->currency->iso_code ?? null),
-                'fetched_at'      => $entry['fetched_at'],
-                'cached'          => $entry['cached'],
+                'instrument_id' => $id,
+                'ticker' => $instrument->ticker,
+                'price' => $entry['quote']['price'] ?? null,
+                'previous_close' => $entry['quote']['previous_close'] ?? null,
+                'change' => $entry['quote']['change'] ?? null,
+                'change_percent' => $entry['quote']['change_percent'] ?? null,
+                'currency' => $entry['quote']['currency'] ?? ($instrument->currency->iso_code ?? null),
+                'fetched_at' => $entry['fetched_at'],
+                'cached' => $entry['cached'],
                 'next_refresh_in' => $entry['next_refresh_in'],
             ];
         })->filter()->values();
@@ -70,7 +70,7 @@ class MarketPollingService implements MarketPollingServiceInterface
      */
     private function resolveQuote(string $ticker): array
     {
-        $key = $this->cachePrefix . strtolower($ticker);
+        $key = $this->cachePrefix.strtolower($ticker);
         $cached = $this->cache->get($key);
         $now = now();
 
@@ -78,9 +78,9 @@ class MarketPollingService implements MarketPollingServiceInterface
             $age = $now->diffInSeconds($cached['fetched_at'], true);
             if ($age < $this->throttleSeconds) {
                 return [
-                    'quote'           => $cached['quote'] ?? null,
-                    'fetched_at'      => $cached['fetched_at'],
-                    'cached'          => true,
+                    'quote' => $cached['quote'] ?? null,
+                    'fetched_at' => $cached['fetched_at'],
+                    'cached' => true,
                     'next_refresh_in' => max(0, $this->throttleSeconds - (int) $age),
                 ];
             }
@@ -92,15 +92,15 @@ class MarketPollingService implements MarketPollingServiceInterface
         // Even when the upstream fails, cache the failure for the throttle
         // window to avoid hammering the provider after a rejection.
         $entry = [
-            'quote'      => $quote,
+            'quote' => $quote,
             'fetched_at' => $fetchedAt,
         ];
         $this->cache->put($key, $entry, $this->throttleSeconds);
 
         return [
-            'quote'           => $quote,
-            'fetched_at'      => $fetchedAt,
-            'cached'          => false,
+            'quote' => $quote,
+            'fetched_at' => $fetchedAt,
+            'cached' => false,
             'next_refresh_in' => $this->throttleSeconds,
         ];
     }

@@ -17,7 +17,7 @@ interface InsightServiceInterface
      * Build an N×N Pearson correlation matrix for the given instruments,
      * computed from the overlapping date range of their daily log returns.
      *
-     * @param  array<int, int> $instrumentIds
+     * @param  array<int, int>  $instrumentIds
      * @return array{
      *   tickers:        array<int, string>,
      *   matrix:         array<int, array<int, float|null>>,

@@ -34,7 +34,7 @@ interface MarketProviderInterface
     /**
      * Fetch instruments (assets) available in the provider.
      *
-     * @param string|null $assetClass Optional filter by asset class name/code.
+     * @param  string|null  $assetClass  Optional filter by asset class name/code.
      * @return Collection<int, array{
      *   name: string,
      *   ticker: string,

@@ -64,10 +64,10 @@ class ExportService implements ExportServiceInterface
         $utf8 = rawurlencode($filename);
 
         return [
-            'Content-Type'        => $contentType,
+            'Content-Type' => $contentType,
             'Content-Disposition' => "attachment; filename=\"{$safe}\"; filename*=UTF-8''{$utf8}",
-            'Cache-Control'       => 'no-store, no-cache, must-revalidate',
-            'Pragma'              => 'no-cache',
+            'Cache-Control' => 'no-store, no-cache, must-revalidate',
+            'Pragma' => 'no-cache',
         ];
     }
 }

@@ -12,13 +12,13 @@ namespace App\DTOs\Insight;
 class InsightDTO
 {
     public function __construct(
-        public readonly int     $instrumentId,
-        public readonly string  $ticker,
-        public readonly ?float  $volatility30dAnnualized,
-        public readonly ?float  $maxDrawdown1y,
-        public readonly ?float  $correlationWithBenchmark,
+        public readonly int $instrumentId,
+        public readonly string $ticker,
+        public readonly ?float $volatility30dAnnualized,
+        public readonly ?float $maxDrawdown1y,
+        public readonly ?float $correlationWithBenchmark,
         public readonly ?string $benchmarkTicker,
-        public readonly int     $samples,
+        public readonly int $samples,
         public readonly ?string $rangeStart,
         public readonly ?string $rangeEnd,
     ) {}
@@ -26,15 +26,15 @@ class InsightDTO
     public function toArray(): array
     {
         return [
-            'instrument_id'              => $this->instrumentId,
-            'ticker'                     => $this->ticker,
-            'volatility_30d_annualized'  => $this->round($this->volatility30dAnnualized, 4),
-            'max_drawdown_1y'            => $this->round($this->maxDrawdown1y, 4),
+            'instrument_id' => $this->instrumentId,
+            'ticker' => $this->ticker,
+            'volatility_30d_annualized' => $this->round($this->volatility30dAnnualized, 4),
+            'max_drawdown_1y' => $this->round($this->maxDrawdown1y, 4),
             'correlation_with_benchmark' => $this->round($this->correlationWithBenchmark, 4),
-            'benchmark_ticker'           => $this->benchmarkTicker,
-            'samples'                    => $this->samples,
-            'range_start'                => $this->rangeStart,
-            'range_end'                  => $this->rangeEnd,
+            'benchmark_ticker' => $this->benchmarkTicker,
+            'samples' => $this->samples,
+            'range_start' => $this->rangeStart,
+            'range_end' => $this->rangeEnd,
         ];
     }
 

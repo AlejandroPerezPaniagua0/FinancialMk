@@ -23,11 +23,11 @@ return new class extends Migration
             $table->decimal('adjusted_close', 18, 6);
 
             $table->bigInteger('volume');
-            
+
             $table->timestamps();
 
             $table->unique(['instrument_id', 'date']);
-            
+
             $table->index('date');
         });
     }

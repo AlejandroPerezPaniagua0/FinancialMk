@@ -30,7 +30,7 @@ class DemoController extends Controller
     public function login(): JsonResponse
     {
         if (! $this->demoService->isEnabled()) {
-            throw new NotFoundHttpException();
+            throw new NotFoundHttpException;
         }
 
         try {

@@ -33,7 +33,7 @@ class StooqApiClient implements MarketProviderInterface
 {
     public function __construct(
         private readonly string $baseUrl,
-        private readonly int    $timeoutSeconds = 10,
+        private readonly int $timeoutSeconds = 10,
     ) {}
 
     public function name(): string
@@ -76,9 +76,9 @@ class StooqApiClient implements MarketProviderInterface
     public function fetchHistoricalPrices(string $ticker, DateTimeInterface $from, DateTimeInterface $to): Collection
     {
         $symbol = $this->normalizeTicker($ticker);
-        $csv    = $this->fetchCsv('/q/d/l/', [
-            's'  => $symbol,
-            'i'  => 'd',                          // daily
+        $csv = $this->fetchCsv('/q/d/l/', [
+            's' => $symbol,
+            'i' => 'd',                          // daily
             'd1' => $from->format('Ymd'),
             'd2' => $to->format('Ymd'),
         ]);
@@ -109,24 +109,24 @@ class StooqApiClient implements MarketProviderInterface
         // Row 0 is the header, row 1 is the quote.
         // Stooq returns "N/D" for missing fields when the symbol is unknown.
         $header = array_map('strtolower', $rows[0]);
-        $row    = array_combine($header, $rows[1]);
+        $row = array_combine($header, $rows[1]);
         if ($row === false || ($row['close'] ?? 'N/D') === 'N/D') {
             return null;
         }
 
         $price = (float) $row['close'];
-        $open  = isset($row['open']) ? (float) $row['open'] : null;
+        $open = isset($row['open']) ? (float) $row['open'] : null;
 
         return [
-            'ticker'         => $ticker,
-            'price'          => $price,
+            'ticker' => $ticker,
+            'price' => $price,
             // Stooq's free CSV does not expose previous_close; we approximate
             // with `open` so the comparison view has *something* to render.
             'previous_close' => $open,
-            'change'         => $open !== null ? $price - $open : null,
+            'change' => $open !== null ? $price - $open : null,
             'change_percent' => $open !== null && $open !== 0.0 ? (($price - $open) / $open) * 100 : null,
-            'currency'       => null,
-            'timestamp'      => trim(($row['date'] ?? '').' '.($row['time'] ?? '')) ?: now()->toIso8601String(),
+            'currency' => null,
+            'timestamp' => trim(($row['date'] ?? '').' '.($row['time'] ?? '')) ?: now()->toIso8601String(),
         ];
     }
 
@@ -169,7 +169,7 @@ class StooqApiClient implements MarketProviderInterface
     }
 
     /**
-     * @param array<string, string> $params
+     * @param  array<string, string>  $params
      */
     private function fetchCsv(string $path, array $params): string
     {
@@ -194,6 +194,7 @@ class StooqApiClient implements MarketProviderInterface
             }
             $rows[] = str_getcsv($line);
         }
+
         return $rows;
     }
 
@@ -211,7 +212,7 @@ class StooqApiClient implements MarketProviderInterface
         }
 
         $header = array_map('strtolower', array_shift($rows));
-        $idx    = array_flip($header);
+        $idx = array_flip($header);
 
         $required = ['date', 'open', 'high', 'low', 'close'];
         foreach ($required as $col) {
@@ -224,14 +225,15 @@ class StooqApiClient implements MarketProviderInterface
             ->filter(fn ($row) => isset($row[$idx['date']]) && $row[$idx['date']] !== 'N/D')
             ->map(function (array $row) use ($idx): array {
                 $close = (float) ($row[$idx['close']] ?? 0);
+
                 return [
-                    'date'           => (string) $row[$idx['date']],
-                    'open'           => (float) ($row[$idx['open']]  ?? 0),
-                    'high'           => (float) ($row[$idx['high']]  ?? 0),
-                    'low'            => (float) ($row[$idx['low']]   ?? 0),
-                    'close'          => $close,
+                    'date' => (string) $row[$idx['date']],
+                    'open' => (float) ($row[$idx['open']] ?? 0),
+                    'high' => (float) ($row[$idx['high']] ?? 0),
+                    'low' => (float) ($row[$idx['low']] ?? 0),
+                    'close' => $close,
                     'adjusted_close' => $close, // Stooq doesn't expose adjusted; mirror close.
-                    'volume'         => (int)   ($row[$idx['volume'] ?? -1] ?? 0),
+                    'volume' => (int) ($row[$idx['volume'] ?? -1] ?? 0),
                 ];
             })
             ->values();

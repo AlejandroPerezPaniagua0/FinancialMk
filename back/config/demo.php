@@ -27,8 +27,8 @@ return [
     | The password is unused at runtime (we mint a token directly without
     | Auth::attempt) but exists so the row is well-formed.
     */
-    'email'    => env('DEMO_EMAIL', 'demo@financialmk.local'),
-    'name'     => env('DEMO_NAME',  'Demo User'),
+    'email' => env('DEMO_EMAIL', 'demo@financialmk.local'),
+    'name' => env('DEMO_NAME', 'Demo User'),
     'password' => env('DEMO_PASSWORD', 'fmk-demo-password'),
 
     /*

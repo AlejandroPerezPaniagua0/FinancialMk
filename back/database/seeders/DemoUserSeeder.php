@@ -27,9 +27,9 @@ class DemoUserSeeder extends Seeder
         $user = User::updateOrCreate(
             ['email' => $email],
             [
-                'name'              => config('demo.name'),
-                'password'          => Hash::make(config('demo.password')),
-                'is_demo'           => true,
+                'name' => config('demo.name'),
+                'password' => Hash::make(config('demo.password')),
+                'is_demo' => true,
                 'email_verified_at' => now(),
             ]
         );

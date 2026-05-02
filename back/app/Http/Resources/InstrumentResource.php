@@ -10,11 +10,11 @@ class InstrumentResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'          => $this->id,
-            'name'        => $this->name,
-            'ticker'      => $this->ticker,
+            'id' => $this->id,
+            'name' => $this->name,
+            'ticker' => $this->ticker,
             'asset_class' => new AssetClassResource($this->whenLoaded('assetClass')),
-            'currency'    => new CurrencyResource($this->whenLoaded('currency')),
+            'currency' => new CurrencyResource($this->whenLoaded('currency')),
         ];
     }
 }

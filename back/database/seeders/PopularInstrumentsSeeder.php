@@ -30,15 +30,15 @@ class PopularInstrumentsSeeder extends Seeder
         }
 
         $payload = json_decode(file_get_contents($path), true, flags: JSON_THROW_ON_ERROR);
-        $rows    = $payload['instruments'] ?? [];
+        $rows = $payload['instruments'] ?? [];
 
         // Pre-load lookups to avoid N queries per row.
         $assetClassIds = AssetClass::pluck('id', 'name')->all();
-        $currencyIds   = Currency::pluck('id', 'iso_code')->all();
+        $currencyIds = Currency::pluck('id', 'iso_code')->all();
 
         foreach ($rows as $row) {
             $assetClassId = $assetClassIds[$row['asset_class']] ?? null;
-            $currencyId   = $currencyIds[$row['currency']] ?? null;
+            $currencyId = $currencyIds[$row['currency']] ?? null;
 
             if (! $assetClassId) {
                 throw new RuntimeException("AssetClass '{$row['asset_class']}' missing — run AssetClassesSeeder first.");
@@ -50,9 +50,9 @@ class PopularInstrumentsSeeder extends Seeder
             Instrument::updateOrCreate(
                 ['ticker' => $row['ticker']],
                 [
-                    'name'           => $row['name'],
+                    'name' => $row['name'],
                     'asset_class_id' => $assetClassId,
-                    'currency_id'    => $currencyId,
+                    'currency_id' => $currencyId,
                 ]
             );
         }

@@ -50,7 +50,7 @@ class MarketProviderServiceProvider extends ServiceProvider
 
             return match ($name) {
                 'twelve_data', 'twelvedata' => $app->make(TwelveDataApiClient::class),
-                'stooq'                     => $app->make(StooqApiClient::class),
+                'stooq' => $app->make(StooqApiClient::class),
                 default => throw new RuntimeException(
                     "Unknown MARKET_PROVIDER '{$name}'. Supported: twelve_data, stooq."
                 ),
