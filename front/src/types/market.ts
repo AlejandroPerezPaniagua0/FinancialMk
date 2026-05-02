@@ -71,5 +71,25 @@ export interface QuotesResponse {
   }
 }
 
+export interface Insight {
+  instrument_id: number
+  ticker: string
+  volatility_30d_annualized: number | null
+  max_drawdown_1y: number | null
+  correlation_with_benchmark: number | null
+  benchmark_ticker: string | null
+  samples: number
+  range_start: string | null
+  range_end: string | null
+}
+
+export interface CorrelationMatrix {
+  tickers: string[]
+  matrix: Array<Array<number | null>>
+  range_start: string | null
+  range_end: string | null
+  samples: number
+}
+
 export const MAX_COMPARISON_ASSETS = 4
 export const MIN_COMPARISON_ASSETS = 2

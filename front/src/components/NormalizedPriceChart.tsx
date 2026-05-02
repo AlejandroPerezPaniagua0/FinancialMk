@@ -129,7 +129,7 @@ export default function NormalizedPriceChart({ instruments, from, to }: Props) {
             }}
           />
           <Tooltip
-            formatter={(v: number) => v.toFixed(2)}
+            formatter={(v) => (typeof v === 'number' ? v.toFixed(2) : String(v))}
             contentStyle={{
               background: isDark ? '#111827' : '#fff',
               border: `1px solid ${gridColor}`,

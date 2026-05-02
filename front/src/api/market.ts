@@ -2,8 +2,10 @@ import { apiClient } from './client'
 import type {
   AssetClass,
   CollectionResponse,
+  CorrelationMatrix,
   Currency,
   HistoricalPrice,
+  Insight,
   Instrument,
   PaginatedResponse,
   QuotesResponse,
@@ -61,4 +63,28 @@ export async function fetchQuotes(
     signal,
   })
   return data
+}
+
+export async function fetchInsight(
+  instrumentId: number,
+  benchmark?: string,
+): Promise<Insight> {
+  const { data } = await apiClient.get<{ data: Insight }>(
+    `/instruments/${instrumentId}/insights`,
+    { params: benchmark ? { benchmark } : {} },
+  )
+  return data.data
+}
+
+export async function fetchCorrelationMatrix(
+  instrumentIds: number[],
+): Promise<CorrelationMatrix> {
+  const { data } = await apiClient.get<{ data: CorrelationMatrix }>(
+    '/instruments/correlation-matrix',
+    {
+      params: { ids: instrumentIds },
+      paramsSerializer: { indexes: false },
+    },
+  )
+  return data.data
 }
