@@ -82,7 +82,7 @@ class MarketDataTest extends TestCase
                         'name',
                         'ticker',
                         'asset_class' => ['id', 'name'],
-                        'currency'    => ['id', 'name', 'iso_code'],
+                        'currency' => ['id', 'name', 'iso_code'],
                     ],
                 ],
                 'meta' => ['current_page', 'per_page', 'total'],
@@ -92,16 +92,16 @@ class MarketDataTest extends TestCase
     public function test_filters_instruments_by_asset_class(): void
     {
         $targetClass = AssetClass::factory()->create();
-        $otherClass  = AssetClass::factory()->create();
-        $currency    = Currency::factory()->create();
+        $otherClass = AssetClass::factory()->create();
+        $currency = Currency::factory()->create();
 
         Instrument::factory()->count(3)->create([
             'asset_class_id' => $targetClass->id,
-            'currency_id'    => $currency->id,
+            'currency_id' => $currency->id,
         ]);
         Instrument::factory()->count(2)->create([
             'asset_class_id' => $otherClass->id,
-            'currency_id'    => $currency->id,
+            'currency_id' => $currency->id,
         ]);
 
         $this->actingAs($this->user)
@@ -149,15 +149,15 @@ class MarketDataTest extends TestCase
 
         HistoricalPrice::factory()->create([
             'instrument_id' => $instrument->id,
-            'date'          => '2024-01-10',
+            'date' => '2024-01-10',
         ]);
         HistoricalPrice::factory()->create([
             'instrument_id' => $instrument->id,
-            'date'          => '2024-06-15',
+            'date' => '2024-06-15',
         ]);
         HistoricalPrice::factory()->create([
             'instrument_id' => $instrument->id,
-            'date'          => '2024-12-20',
+            'date' => '2024-12-20',
         ]);
 
         $this->actingAs($this->user)

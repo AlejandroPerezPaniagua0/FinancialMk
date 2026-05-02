@@ -2,20 +2,28 @@
 
 namespace App\Providers;
 
-use App\ApiClient\TwelveDataApiClient;
 use App\Repositories\HistoricalPriceRepository;
 use App\Repositories\InstrumentRepository;
 use App\Repositories\Interfaces\HistoricalPriceRepositoryInterface;
 use App\Repositories\Interfaces\InstrumentRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\Interfaces\WatchlistRepositoryInterface;
 use App\Repositories\UserRepository;
+use App\Repositories\WatchlistRepository;
 use App\Services\AuthService;
+use App\Services\DemoService;
+use App\Services\ExportService;
+use App\Services\InsightService;
 use App\Services\Interfaces\AuthServiceInterface;
+use App\Services\Interfaces\DemoServiceInterface;
+use App\Services\Interfaces\ExportServiceInterface;
+use App\Services\Interfaces\InsightServiceInterface;
 use App\Services\Interfaces\MarketPollingServiceInterface;
-use App\Services\Interfaces\MarketProviderInterface;
 use App\Services\Interfaces\UserSettingsServiceInterface;
+use App\Services\Interfaces\WatchlistServiceInterface;
 use App\Services\MarketPollingService;
 use App\Services\UserSettingsService;
+use App\Services\WatchlistService;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -32,17 +40,16 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(InstrumentRepositoryInterface::class, InstrumentRepository::class);
         $this->app->bind(HistoricalPriceRepositoryInterface::class, HistoricalPriceRepository::class);
-
-        // Api Clients
-        $this->app->bind(TwelveDataApiClient::class, function ($app) {
-            return new TwelveDataApiClient(config('services.twelve_data.base_url'), config('services.twelve_data.api_key'));
-        });
+        $this->app->bind(WatchlistRepositoryInterface::class, WatchlistRepository::class);
 
         // Services
         $this->app->bind(AuthServiceInterface::class, AuthService::class);
-        $this->app->bind(MarketProviderInterface::class, TwelveDataApiClient::class);
         $this->app->bind(UserSettingsServiceInterface::class, UserSettingsService::class);
         $this->app->bind(MarketPollingServiceInterface::class, MarketPollingService::class);
+        $this->app->bind(InsightServiceInterface::class, InsightService::class);
+        $this->app->bind(WatchlistServiceInterface::class, WatchlistService::class);
+        $this->app->bind(ExportServiceInterface::class, ExportService::class);
+        $this->app->bind(DemoServiceInterface::class, DemoService::class);
     }
 
     /**

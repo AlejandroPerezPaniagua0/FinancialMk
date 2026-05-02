@@ -1,7 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import {
   fetchAssetClasses,
+  fetchCorrelationMatrix,
   fetchCurrencies,
+  fetchInsight,
   fetchInstruments,
   fetchPrices,
   type FetchInstrumentsParams,
@@ -34,5 +36,22 @@ export function usePrices(instrumentId: number, params: FetchPricesParams = {}) 
     queryKey: ['prices', instrumentId, params],
     queryFn: () => fetchPrices(instrumentId, params),
     enabled: instrumentId > 0,
+  })
+}
+
+export function useInsight(instrumentId: number, benchmark?: string) {
+  return useQuery({
+    queryKey: ['insight', instrumentId, benchmark ?? null],
+    queryFn: () => fetchInsight(instrumentId, benchmark),
+    enabled: instrumentId > 0,
+  })
+}
+
+export function useCorrelationMatrix(instrumentIds: number[]) {
+  const sortedKey = [...instrumentIds].sort((a, b) => a - b).join(',')
+  return useQuery({
+    queryKey: ['correlation-matrix', sortedKey],
+    queryFn: () => fetchCorrelationMatrix(instrumentIds),
+    enabled: instrumentIds.length >= 2,
   })
 }

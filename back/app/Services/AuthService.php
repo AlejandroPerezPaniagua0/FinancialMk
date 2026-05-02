@@ -30,13 +30,13 @@ class AuthService implements AuthServiceInterface
 
     public function login(LoginUserDTO $dto): AuthResponseDTO
     {
-        if (!Auth::attempt($dto->toArray())) {
+        if (! Auth::attempt($dto->toArray())) {
             throw new AuthenticationException('Invalid credentials');
         }
 
         $user = $this->userRepository->findByEmail($dto->email);
 
-        if (!$user) {
+        if (! $user) {
             throw new AuthenticationException('User not found');
         }
 

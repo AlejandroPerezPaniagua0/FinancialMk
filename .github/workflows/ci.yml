@@ -24,7 +24,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.5'
           extensions: mbstring, dom, fileinfo, pdo, pdo_sqlite, sqlite3, bcmath
           coverage: none
           tools: composer:v2
@@ -60,7 +60,7 @@ jobs:
         run: ./vendor/bin/pint --test
 
       - name: PHPUnit
-        run: php artisan test --no-interaction
+        run: php artisan test
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite

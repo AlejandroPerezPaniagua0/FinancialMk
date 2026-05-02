@@ -4,6 +4,7 @@ export interface AuthUser {
   id: number
   name: string
   email: string
+  is_demo?: boolean
 }
 
 export interface AuthResponse {
@@ -39,4 +40,9 @@ export async function register(payload: RegisterPayload): Promise<AuthResponse> 
 export async function logout(): Promise<void> {
   await apiClient.post('/auth/logout')
   localStorage.removeItem(TOKEN_STORAGE_KEY)
+}
+
+export async function fetchCurrentUser(): Promise<AuthUser> {
+  const { data } = await apiClient.get<AuthUser>('/user')
+  return data
 }

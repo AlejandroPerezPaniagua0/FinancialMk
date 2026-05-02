@@ -14,10 +14,10 @@ class InstrumentFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'           => fake()->company(),
-            'ticker'         => strtoupper(fake()->unique()->lexify('????')),
+            'name' => fake()->company(),
+            'ticker' => strtoupper(fake()->unique()->lexify('????')),
             'asset_class_id' => AssetClass::factory(),
-            'currency_id'    => Currency::factory(),
+            'currency_id' => Currency::factory(),
         ];
     }
 }

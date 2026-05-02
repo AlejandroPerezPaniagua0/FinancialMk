@@ -14,18 +14,14 @@ abstract class BaseApiClient
         protected string $baseUrl,
         protected string $apiKey
     ) {}
+
     /**
      * Authorize the request
-     * @param PendingRequest $request
-     * @return PendingRequest
      */
     abstract protected function authorize(PendingRequest $request): PendingRequest;
 
     /**
      * Get the data from the API
-     * @param string $endpoint
-     * @param array $params
-     * @return array
      */
     public function get(string $endpoint, array $params = []): array
     {
@@ -38,36 +34,36 @@ abstract class BaseApiClient
         try {
             $response = $request->get($endpoint, $params);
         } catch (Exception $e) {
-            throw new Exception('API Error: ' . $e->getMessage());
+            throw new Exception('API Error: '.$e->getMessage());
         }
         $response = $this->normalizeResponse($response);
 
         $this->handleError($response);
+
         return (array) $response->json();
     }
 
     /**
      * Handle the error
-     * @param Response $response
-     * @return void
      */
     protected function handleError(Response $response): void
     {
         if ($response->failed()) {
-            throw new Exception('API Error: ' . $response->body());
+            throw new Exception('API Error: '.$response->body());
         }
     }
 
     /**
      * Normalize the response
-     * @param Response|PromiseInterface $response
-     * @return Response
+     *
+     * @param  Response|PromiseInterface  $response
      */
     protected function normalizeResponse($response): Response
     {
         if ($response instanceof PromiseInterface) {
             return $response->wait();
         }
+
         return $response;
     }
 }

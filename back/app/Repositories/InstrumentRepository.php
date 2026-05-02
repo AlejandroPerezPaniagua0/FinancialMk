@@ -12,7 +12,7 @@ class InstrumentRepository implements InstrumentRepositoryInterface
     {
         $query = Instrument::with(['assetClass', 'currency']);
 
-        if (!empty($filters['asset_class_id'])) {
+        if (! empty($filters['asset_class_id'])) {
             $query->where('asset_class_id', $filters['asset_class_id']);
         }
 

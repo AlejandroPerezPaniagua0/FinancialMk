@@ -1,11 +1,16 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react'
-import { type AuthUser, logout as apiLogout } from '@/api/auth'
+import {
+  type AuthUser,
+  fetchCurrentUser,
+  logout as apiLogout,
+} from '@/api/auth'
 import { TOKEN_STORAGE_KEY } from '@/api/client'
 
 interface AuthContextValue {
   user: AuthUser | null
   token: string | null
   isAuthenticated: boolean
+  isDemo: boolean
   setAuth: (user: AuthUser, token: string) => void
   clearAuth: () => void
 }
@@ -18,13 +23,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     () => localStorage.getItem(TOKEN_STORAGE_KEY),
   )
 
-  // On mount, if there is already a token stored, mark as authenticated.
-  // A full user-profile fetch (GET /api/user) can be added here later.
+  // Hydrate the user from the API when a token is already stored on mount.
+  // This populates is_demo so the demo banner can render after a refresh.
   useEffect(() => {
     const stored = localStorage.getItem(TOKEN_STORAGE_KEY)
     if (!stored) {
       setUser(null)
       setToken(null)
+      return
+    }
+
+    let cancelled = false
+    fetchCurrentUser()
+      .then((profile) => {
+        if (!cancelled) setUser(profile)
+      })
+      .catch(() => {
+        if (!cancelled) {
+          localStorage.removeItem(TOKEN_STORAGE_KEY)
+          setUser(null)
+          setToken(null)
+        }
+      })
+
+    return () => {
+      cancelled = true
     }
   }, [])
 
@@ -48,13 +71,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, token, isAuthenticated: token !== null, setAuth, clearAuth }}
+      value={{
+        user,
+        token,
+        isAuthenticated: token !== null,
+        isDemo: user?.is_demo === true,
+        setAuth,
+        clearAuth,
+      }}
     >
       {children}
     </AuthContext.Provider>
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth(): AuthContextValue {
   const ctx = useContext(AuthContext)
   if (!ctx) throw new Error('useAuth must be used within <AuthProvider>')

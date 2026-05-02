@@ -49,10 +49,10 @@ class UserSettingsTest extends TestCase
         $currency = Currency::factory()->create();
 
         UserSetting::factory()->create([
-            'user_id'     => $this->user->id,
+            'user_id' => $this->user->id,
             'currency_id' => $currency->id,
-            'theme'       => 'dark',
-            'language'    => 'es',
+            'theme' => 'dark',
+            'language' => 'es',
         ]);
 
         $this->actingAs($this->user)
@@ -76,8 +76,8 @@ class UserSettingsTest extends TestCase
 
         $this->actingAs($this->user)
             ->putJson('/api/user/settings', [
-                'theme'       => 'dark',
-                'language'    => 'es',
+                'theme' => 'dark',
+                'language' => 'es',
                 'currency_id' => $currency->id,
             ])
             ->assertStatus(200)
@@ -86,9 +86,9 @@ class UserSettingsTest extends TestCase
             ->assertJsonPath('data.currency.id', $currency->id);
 
         $this->assertDatabaseHas('user_settings', [
-            'user_id'     => $this->user->id,
-            'theme'       => 'dark',
-            'language'    => 'es',
+            'user_id' => $this->user->id,
+            'theme' => 'dark',
+            'language' => 'es',
             'currency_id' => $currency->id,
         ]);
     }
@@ -96,8 +96,8 @@ class UserSettingsTest extends TestCase
     public function test_partial_update_only_changes_provided_fields(): void
     {
         UserSetting::factory()->create([
-            'user_id'  => $this->user->id,
-            'theme'    => 'dark',
+            'user_id' => $this->user->id,
+            'theme' => 'dark',
             'language' => 'es',
             'timezone' => 'Europe/Madrid',
         ]);
@@ -120,7 +120,7 @@ class UserSettingsTest extends TestCase
 
         $this->assertDatabaseHas('user_settings', [
             'user_id' => $this->user->id,
-            'theme'   => 'dark',
+            'theme' => 'dark',
         ]);
     }
 
@@ -155,7 +155,7 @@ class UserSettingsTest extends TestCase
     public function test_accepts_null_currency_id(): void
     {
         UserSetting::factory()->create([
-            'user_id'     => $this->user->id,
+            'user_id' => $this->user->id,
             'currency_id' => Currency::factory()->create()->id,
         ]);
 
